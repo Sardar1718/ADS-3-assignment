@@ -1,55 +1,76 @@
 public class Experiment {
 
-    private Sorter sorter;
-    private Searcher searcher;
+    public void runTraversals(Graph g) {
 
-    public Experiment(Sorter sorter, Searcher searcher) {
-        this.sorter = sorter;
-        this.searcher = searcher;
+        System.out.println("BFS Traversal:");
+
+        long startBfs = System.nanoTime();
+
+        g.bfs(0);
+
+        long endBfs = System.nanoTime();
+
+        System.out.println("BFS Execution Time: "
+                + (endBfs - startBfs) + " ns");
+
+        System.out.println();
+
+        System.out.println("DFS Traversal:");
+
+        long startDfs = System.nanoTime();
+
+        g.dfs(0);
+
+        long endDfs = System.nanoTime();
+
+        System.out.println("DFS Execution Time: "
+                + (endDfs - startDfs) + " ns");
+
+        System.out.println("-----------------------------------");
     }
 
-    public long measureSortTime(int[] arr, String type) {
-        int[] copy = arr.clone();
+    public void runMultipleTests() {
 
-        long start = System.nanoTime();
-
-        if (type.equals("basic")) {
-            sorter.basicSort(copy);
-        } else {
-            sorter.advancedSort(copy);
-        }
-
-        long end = System.nanoTime();
-        return end - start;
-    }
-
-    public long measureSearchTime(int[] arr, int target) {
-        long start = System.nanoTime();
-
-        searcher.search(arr, target);
-
-        long end = System.nanoTime();
-        return end - start;
-    }
-
-    public void runAllExperiments() {
-        int[] sizes = {10, 100, 1000};
+        int[] sizes = {10, 30, 100};
 
         for (int size : sizes) {
-            System.out.println("\nArray size:" + size);
 
-            int[] randomArray = sorter.generateRandomArray(size);
-            int[] sortedArray = randomArray.clone();
-            sorter.advancedSort(sortedArray);
+            System.out.println("\n===============================");
+            System.out.println("GRAPH SIZE: " + size);
+            System.out.println("===============================");
 
-            long basicTime = measureSortTime(randomArray, "basic");
-            long advancedTime = measureSortTime(randomArray, "advanced");
+            Graph graph = new Graph();
 
-            long searchTime = measureSearchTime(sortedArray, sortedArray[size / 2]);
+            for (int i = 0; i < size; i++) {
 
-            System.out.println("Insertion Sort time:" + basicTime);
-            System.out.println("Merge Sort time:" + advancedTime);
-            System.out.println("Binary Search time:" + searchTime);
+                graph.addVertex(new Vertex(i));
+            }
+
+            for (int i = 0; i < size - 1; i++) {
+
+                graph.addEdge(i, i + 1);
+
+                if (i + 2 < size) {
+
+                    graph.addEdge(i, i + 2);
+                }
+            }
+
+            if (size == 10) {
+
+                System.out.println("\nGraph Structure:");
+
+                graph.printGraph();
+
+                System.out.println();
+            }
+
+            runTraversals(graph);
         }
+    }
+
+    public void printResults() {
+
+        System.out.println("\nAll experiments completed successfully.");
     }
 }

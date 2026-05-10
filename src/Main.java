@@ -1,10 +1,14 @@
 public class Main {
+
     public static void main(String[] args) {
 
-        Sorter sorter = new Sorter();
-        Searcher searcher = new Searcher();
-        Experiment experiment = new Experiment(sorter, searcher);
+        System.out.println("GRAPH TRAVERSAL SYSTEM");
+        System.out.println("======================");
 
-        experiment.runAllExperiments();
+        Experiment experiment = new Experiment();
+
+        experiment.runMultipleTests();
+
+        experiment.printResults();
     }
 }
